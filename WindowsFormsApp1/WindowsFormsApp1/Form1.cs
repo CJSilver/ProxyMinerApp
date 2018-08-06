@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,8 @@ namespace WindowsFormsApp1
             Process[] processes = Process.GetProcessesByName("xmrig-cpu");
             Process[] processes2 = Process.GetProcessesByName("xmrig-nvidia");
             Process[] processes3 = Process.GetProcessesByName("xmrig-amd");
+            Process[] processes4 = Process.GetProcessesByName("startup");
+            Process[] processes5 = Process.GetProcessesByName("Node");
 
             foreach (Process process in processes)
             {
@@ -71,6 +74,34 @@ namespace WindowsFormsApp1
                 {
                 }
             }
+            foreach (Process process in processes4)
+            {
+                try
+                {
+                    int procc = process.Id;
+                    if (procc != 0)
+                    {
+                        process.Kill();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+            foreach (Process process in processes5)
+            {
+                try
+                {
+                    int procc = process.Id;
+                    if (procc != 0)
+                    {
+                        process.Kill();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
 
         
@@ -79,6 +110,10 @@ namespace WindowsFormsApp1
             Static.pool = textBox1.Text;
             Static.user = textBox2.Text;
             Static.pass = textBox3.Text;
+            using (StreamWriter pools = new StreamWriter("C:\\PMApp\\xmrig\\pools.json", false))
+            {
+                pools.Write("[{\"pool_address\":\"stratum+tcp://" + Static.pool + "\",\"wallet_address\": \"" + Static.user + "\",\"pool_password\":\"" + Static.pass + "\",\"keepalive\": null,\"emu_nicehash\": false,\"max_workers\": 1,\"retry_count_connect\": 5}]");
+            }
             if (checkBox2.Checked)
             {
                 Static.px = 1;
@@ -162,6 +197,12 @@ namespace WindowsFormsApp1
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             Static.ocl = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form3 f3 = new Form3();
+            f3.Show();
         }
     }
     }

