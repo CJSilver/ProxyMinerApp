@@ -13,10 +13,13 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        private readonly ErrorProvider _errorProvider1;
         public Form1()
         {
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            _errorProvider1 = new ErrorProvider(this);
+            textBox4.Validating += TextBoxIntOnValidating;
         }
 
 
@@ -25,6 +28,7 @@ namespace WindowsFormsApp1
             Process[] processes = Process.GetProcessesByName("xmrig-cpu");
             Process[] processes2 = Process.GetProcessesByName("xmrig-nvidia");
             Process[] processes3 = Process.GetProcessesByName("xmrig-amd");
+
             foreach (Process process in processes)
             {
                 try
@@ -69,44 +73,95 @@ namespace WindowsFormsApp1
             }
         }
 
+        
         private void button1_Click(object sender, EventArgs e)
         {
-            string cmd = "start C:\\PMApp\\xmrig\\xmrig-cpu.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 --donate-level=1";
-            string cmd2 = "start C:\\PMApp\\xmrig-nvidia-261\\xmrig-nvidia.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 --donate-level=1";
-            string cmd3 = "start C:\\PMApp\\xmrig-amd-271\\xmrig-amd.exe -a cryptonight -o stratum+tcp://213.5.31.38:8888 --donate-level=1";
-            var proc = new ProcessStartInfo()
+            Static.pool = textBox1.Text;
+            Static.user = textBox2.Text;
+            Static.pass = textBox3.Text;
+            if (checkBox2.Checked)
             {
-                UseShellExecute = true,
-                WorkingDirectory = @"C:\Windows\System32",
-                FileName = @"C:\Windows\System32\cmd.exe",
-                Arguments = "/c " + cmd,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-            var proc2 = new ProcessStartInfo()
+                Static.px = 1;
+            }
+            else
             {
-                UseShellExecute = true,
-                WorkingDirectory = @"C:\Windows\System32",
-                FileName = @"C:\Windows\System32\cmd.exe",
-                Arguments = "/c " + cmd2,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-            var proc3 = new ProcessStartInfo()
+                Static.px = 0;
+            }
+            if (checkBox3.Checked)
             {
-                UseShellExecute = true,
-                WorkingDirectory = @"C:\Windows\System32",
-                FileName = @"C:\Windows\System32\cmd.exe",
-                Arguments = "/c " + cmd3,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
+                Static.py = 3;
+            }
+            else
+            {
+                Static.py = 0;
+            }
+            if (checkBox4.Checked)
+            {
+                Static.pz = 5;
+            }
+            else
+            {
+                Static.pz = 0;
+            }
 
-            Process.Start(proc);
-            Process.Start(proc2);
-            Process.Start(proc3);
+            int toMs = 1000;
+            int stdSec = 10;
+            if(textBox4.Text == "Refresh time in seconds")
+            {
+                Static.refresh = stdSec * toMs;
+            }
+            else
+            {
+                if(Int32.Parse(textBox4.Text) > 0)
+                {
+                    Static.refresh = Int32.Parse(textBox4.Text) * toMs;
+                }
+                else
+                {
+                    Static.refresh = stdSec * toMs;
+                }
+            }
+            Form2 f2 = new Form2();
+            f2.Show();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+            private void Form1_Load(object sender, EventArgs e)
+            {
 
+            }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Static.bg = " -B";
+        }
+        private void TextBoxIntOnValidating(object sender, CancelEventArgs cancelEventArgs)
+        {
+            try
+            {
+                int x = Int32.Parse(textBox4.Text);
+
+                _errorProvider1.SetError(textBox4, "");
+            }
+            catch (Exception e)
+            {
+                _errorProvider1.SetError(textBox4, "Only number.");
+                textBox4.Text = "Refresh time in seconds";
+            }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Static.cpu = true;
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            Static.cuda = true;
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            Static.ocl = true;
         }
     }
-}
+    }
