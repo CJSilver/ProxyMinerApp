@@ -15,6 +15,7 @@ using Newtonsoft.Json.Converters;
 using J = Newtonsoft.Json.JsonPropertyAttribute;
 using R = Newtonsoft.Json.Required;
 using N = Newtonsoft.Json.NullValueHandling;
+using System.IO;
 
 namespace WindowsFormsApp1
 {
@@ -36,7 +37,7 @@ namespace WindowsFormsApp1
             Process[] processes2 = Process.GetProcessesByName("xmrig-nvidia");
             Process[] processes3 = Process.GetProcessesByName("xmrig-amd");
             Process[] processes4 = Process.GetProcessesByName("startup");
-            Process[] processes5 = Process.GetProcessesByName("Node");
+            Process[] processes5 = Process.GetProcessesByName("node");
 
             foreach (Process process in processes)
             {
@@ -114,6 +115,12 @@ namespace WindowsFormsApp1
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            
+            minerStart();
+        }
+
+        private void minerStart()
+        {
             string cmd = "start C:\\PMApp\\xmrig\\xmrig-cpu.exe" + Static.bg + " -a cryptonight -o stratum+tcp://127.0.0.1:8888 -u cpu -p cpu --api-port 9001";
             string cmd2 = "start C:\\PMApp\\xmrig\\xmrig-nvidia.exe" + Static.bg + " -a cryptonight -o stratum+tcp://127.0.0.1:8888 -u nvidia -p cuda --api-port 9002";
             string cmd3 = "start C:\\PMApp\\xmrig\\xmrig-amd.exe" + Static.bg + " -a cryptonight -o stratum+tcp://127.0.0.1:8888 -u amd -p ocl --api-port 9003";
@@ -169,6 +176,8 @@ namespace WindowsFormsApp1
             label1.Text = "Wait! Starting miner and Data loading";
             timer1.Start();
             timer2.Start();
+            timer3.Interval = 1000;
+            timer3.Start();
 
             if (Static.cpu)
             {
@@ -290,6 +299,8 @@ namespace WindowsFormsApp1
             Process[] processes = Process.GetProcessesByName("xmrig-cpu");
             Process[] processes2 = Process.GetProcessesByName("xmrig-nvidia");
             Process[] processes3 = Process.GetProcessesByName("xmrig-amd");
+            Process[] processes4 = Process.GetProcessesByName("startup");
+            Process[] processes5 = Process.GetProcessesByName("node");
 
             foreach (Process process in processes)
             {
@@ -333,8 +344,128 @@ namespace WindowsFormsApp1
                 {
                 }
             }
+            foreach (Process process in processes4)
+            {
+                try
+                {
+                    int procc = process.Id;
+                    if (procc != 0)
+                    {
+                        process.Kill();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+            foreach (Process process in processes5)
+            {
+                try
+                {
+                    int procc = process.Id;
+                    if (procc != 0)
+                    {
+                        process.Kill();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
 
             this.Close();
+        }
+
+        int time = 3540;
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            if(time > 0)
+            {
+                time--;
+            }
+            else
+            {
+                Process[] processes = Process.GetProcessesByName("xmrig-cpu");
+                Process[] processes2 = Process.GetProcessesByName("xmrig-nvidia");
+                Process[] processes3 = Process.GetProcessesByName("xmrig-amd");
+                Process[] processes4 = Process.GetProcessesByName("startup");
+                Process[] processes5 = Process.GetProcessesByName("node");
+
+                foreach (Process process in processes)
+                {
+                    try
+                    {
+                        int procc = process.Id;
+                        if (procc != 0)
+                        {
+                            process.Kill();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                foreach (Process process in processes2)
+                {
+                    try
+                    {
+                        int procc = process.Id;
+                        if (procc != 0)
+                        {
+                            process.Kill();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                foreach (Process process in processes3)
+                {
+                    try
+                    {
+                        int procc = process.Id;
+                        if (procc != 0)
+                        {
+                            process.Kill();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                foreach (Process process in processes4)
+                {
+                    try
+                    {
+                        int procc = process.Id;
+                        if (procc != 0)
+                        {
+                            process.Kill();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                foreach (Process process in processes5)
+                {
+                    try
+                    {
+                        int procc = process.Id;
+                        if (procc != 0)
+                        {
+                            process.Kill();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+
+                Form4 f4 = new Form4();
+                f4.Show();
+                this.Close();
+            }
         }
     }
     public partial class RootObject
